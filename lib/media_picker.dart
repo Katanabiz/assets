@@ -89,7 +89,6 @@ class _MediaPickerState extends State<MediaPicker> {
               for (var asset in selectedAssetList) {
                 await _cropImage(asset);
               }
-              Navigator.pop(context, selectedAssetList);
             },
             child: const Center(
               child: Padding(
@@ -198,7 +197,7 @@ class _MediaPickerState extends State<MediaPicker> {
     if (tempFile != null) {
       final CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: tempFile.path,
-        aspectRatio: const CropAspectRatio(ratioX: 5.5, ratioY: 11),
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
         compressQuality: 90,
         maxHeight: 100,
         maxWidth: 100,
@@ -209,7 +208,7 @@ class _MediaPickerState extends State<MediaPicker> {
               toolbarTitle: 'Cropper',
               toolbarColor: Colors.deepOrange,
               toolbarWidgetColor: Colors.white,
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.grey[300],
               cropFrameColor: Colors.deepOrange,
               cropFrameStrokeWidth: 5,
               showCropGrid: true,
@@ -226,13 +225,17 @@ class _MediaPickerState extends State<MediaPicker> {
         setState(() {
           _croppedFile = File(croppedFile.path);
         });
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MyApp(croppedFile: _croppedFile),
-          ),
-        );
+        navigatorMethod();
       }
     }
+  }
+
+  void navigatorMethod() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyApp(croppedFile: _croppedFile)),
+    ).then((_) {
+      Navigator.pop(context, selectedAssetList);
+    });
   }
 }
