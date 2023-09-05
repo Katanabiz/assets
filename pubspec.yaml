@@ -12,6 +12,7 @@ dependencies:
   photo_manager: ^2.7.1
   permission_handler: ^10.4.3
   image: ^4.0.17
+  image_cropper: ^5.0.0
 
 
 dev_dependencies:

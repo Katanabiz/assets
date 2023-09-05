@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -10,7 +11,8 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, this.croppedFile});
+  final File? croppedFile;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -18,6 +20,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   List<AssetEntity> sellectedAssetList = [];
+    
+
+
 
   Future<void> pickAssets({
     required int maxCount,

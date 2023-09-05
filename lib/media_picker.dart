@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_view/media_services.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class MediaPicker extends StatefulWidget {
   const MediaPicker(this.maxCount, this.requestType, {super.key});
@@ -17,6 +21,8 @@ class _MediaPickerState extends State<MediaPicker> {
   List<AssetEntity> assetList = [];
   List<AssetPathEntity> albumList = [];
   List<AssetEntity> selectedAssetList = [];
+  List<File> fileList = [];
+  File? _croppedFile;
 
   @override
   void initState() {
@@ -78,7 +84,10 @@ class _MediaPickerState extends State<MediaPicker> {
         ),
         actions: [
           GestureDetector(
-            onTap: () {
+            onTap: () async {
+              for (var asset in selectedAssetList) {
+                await _cropImage(asset);
+              }
               Navigator.pop(context, selectedAssetList);
             },
             child: const Center(
@@ -126,7 +135,6 @@ class _MediaPickerState extends State<MediaPicker> {
                 isOriginal: false,
                 thumbnailSize: const ThumbnailSize.square(250),
                 fit: BoxFit.cover,
-               
                 errorBuilder: (context, error, stackTrace) {
                   return const Center(
                       child: Icon(Icons.error, color: Colors.red));
@@ -180,6 +188,47 @@ class _MediaPickerState extends State<MediaPicker> {
         setState(() {
           selectedAssetList.add(assetEntity);
         });
+      }
+    }
+  }
+
+  Future<void> _cropImage(AssetEntity assetEntity) async {
+    File? tempFile = await assetEntity.file;
+    if (tempFile != null) {
+      final CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: tempFile.path,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 100,
+        maxHeight: 700,
+        maxWidth: 700,
+        compressFormat: ImageCompressFormat.png,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Cropper',
+              toolbarColor: Colors.deepOrange,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              hideBottomControls: true,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: 'Cropper',
+          ),
+        ],
+      );
+
+      if (croppedFile != null) {
+        setState(() {
+          _croppedFile = File(croppedFile.path);
+        });
+
+        // Do something with the cropped file, e.g., upload it to a server or save it locally
       }
     }
   }
