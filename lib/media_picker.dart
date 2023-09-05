@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_view/main.dart';
 import 'package:image_view/media_services.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -197,23 +198,21 @@ class _MediaPickerState extends State<MediaPicker> {
     if (tempFile != null) {
       final CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: tempFile.path,
-        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-        compressQuality: 100,
-        maxHeight: 700,
-        maxWidth: 700,
+        aspectRatio: const CropAspectRatio(ratioX: 5.5, ratioY: 11),
+        compressQuality: 90,
+        maxHeight: 100,
+        maxWidth: 100,
+        cropStyle: CropStyle.rectangle,
         compressFormat: ImageCompressFormat.png,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio16x9
-        ],
         uiSettings: [
           AndroidUiSettings(
               toolbarTitle: 'Cropper',
               toolbarColor: Colors.deepOrange,
               toolbarWidgetColor: Colors.white,
+              backgroundColor: Colors.white,
+              cropFrameColor: Colors.deepOrange,
+              cropFrameStrokeWidth: 5,
+              showCropGrid: true,
               initAspectRatio: CropAspectRatioPreset.original,
               hideBottomControls: true,
               lockAspectRatio: false),
@@ -227,8 +226,12 @@ class _MediaPickerState extends State<MediaPicker> {
         setState(() {
           _croppedFile = File(croppedFile.path);
         });
-
-        // Do something with the cropped file, e.g., upload it to a server or save it locally
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MyApp(croppedFile: _croppedFile),
+          ),
+        );
       }
     }
   }

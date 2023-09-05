@@ -11,8 +11,10 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key, this.croppedFile});
-  final File? croppedFile;
+  const MyApp({
+    super.key, this.croppedFile,
+  });
+ final   File? croppedFile;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -20,8 +22,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   List<AssetEntity> sellectedAssetList = [];
-    
-
 
 
   Future<void> pickAssets({
@@ -50,35 +50,16 @@ class _MyAppState extends State<MyApp> {
               appBar: AppBar(
                 title: const Text('Advanced Image Picker'),
               ),
-              body: GridView.builder(
-                  itemCount: sellectedAssetList.length,
-                  itemBuilder: (context, index) {
-                    AssetEntity assetEntity = sellectedAssetList[index];
-                    return Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Stack(
-                          children: [
-                            Positioned.fill(
-                              child: AssetEntityImage(
-                                assetEntity,
-                                isOriginal: false,
-                                thumbnailSize: const ThumbnailSize.square(1000),
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Center(
-                                      child:
-                                          Icon(Icons.error, color: Colors.red));
-                                },
-                              ),
-                            ),
-                          ],
-                        ));
-                  },
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 5,
-                  )),
+              body: Column(
+                children: [
+                  Center(
+                    child: widget.croppedFile != null
+                        ? Image.file(widget.croppedFile!,
+                            fit: BoxFit.cover, height: 300, width: 300)
+                        : const Text('No file selected'),
+                  ),
+                ],
+              ),
               floatingActionButton: FloatingActionButton(
                   onPressed: () {
                     print("Context 5555555555555: $context");
