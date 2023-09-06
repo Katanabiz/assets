@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_view/main.dart';
+import 'package:image_view/mainold.dart';
 import 'package:image_view/media_services.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -195,25 +195,16 @@ class _MediaPickerState extends State<MediaPicker> {
   Future<void> _cropImage(AssetEntity assetEntity) async {
     File? tempFile = await assetEntity.file;
     if (tempFile != null) {
-      final CroppedFile? croppedFile = await ImageCropper().cropImage(
+        final croppedFile = await ImageCropper().cropImage(
         sourcePath: tempFile.path,
-        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-        compressQuality: 90,
-        maxHeight: 100,
-        maxWidth: 100,
-        cropStyle: CropStyle.rectangle,
-        compressFormat: ImageCompressFormat.png,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 100,
         uiSettings: [
           AndroidUiSettings(
               toolbarTitle: 'Cropper',
               toolbarColor: Colors.deepOrange,
               toolbarWidgetColor: Colors.white,
-              backgroundColor: Colors.grey[300],
-              cropFrameColor: Colors.deepOrange,
-              cropFrameStrokeWidth: 5,
-              showCropGrid: true,
               initAspectRatio: CropAspectRatioPreset.original,
-              hideBottomControls: true,
               lockAspectRatio: false),
           IOSUiSettings(
             title: 'Cropper',
@@ -231,11 +222,11 @@ class _MediaPickerState extends State<MediaPicker> {
   }
 
   void navigatorMethod() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MyApp(croppedFile: _croppedFile)),
-    ).then((_) {
-      Navigator.pop(context, selectedAssetList);
-    });
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => MyApp(croppedFile: _croppedFile)),
+    // ).then((_) {
+    //   Navigator.pop(context, selectedAssetList);
+    // });
   }
 }
