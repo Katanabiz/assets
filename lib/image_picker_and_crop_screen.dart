@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_view/image_view.dart';
 import 'package:image_view/mainold.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -18,7 +19,7 @@ class ImagePickerAndCropperScreenState
     extends State<ImagePickerAndCropperScreen> {
   AssetEntity? _assetEntity;
 
-  Future<void> _cropImage(BuildContext context, String filePath) async {
+  Future<void> _cropImage( String filePath) async {
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: filePath,
       compressFormat: ImageCompressFormat.jpg,
@@ -43,10 +44,20 @@ class ImagePickerAndCropperScreenState
       setState(() {
         _assetEntity = croppedEntity;
       });
+      navigateToDisplayImageScreen(croppedEntity!);
     }
   }
 
-  void _selectImageFromGallery(BuildContext context) async {
+  void navigateToDisplayImageScreen(AssetEntity assetEntity) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DisplayImageScreen(assetEntity: assetEntity),
+      ),
+    );
+  }
+
+  void _selectImageFromGallery() async {
     final List<AssetPathEntity> albums =
         await PhotoManager.getAssetPathList(onlyAll: true);
     final AssetPathEntity album = albums.first;
@@ -54,18 +65,22 @@ class ImagePickerAndCropperScreenState
         await album.getAssetListPaged(page: 0, size: 60);
 
     if (images.isNotEmpty) {
-      final selectedImage = await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ImageGridScreen(images: images),
-        ),
-      ) as AssetEntity?;
+      final selectedImage = await imageGridMethod(images) as AssetEntity?;
 
       if (selectedImage != null) {
         final file = await selectedImage.file;
-        _cropImage(context, file!.path);
+        _cropImage( file!.path);
       }
     }
+  }
+
+  Future<dynamic> imageGridMethod(List<AssetEntity> images) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ImageGridScreen(images: images),
+      ),
+    );
   }
 
   void _openCamera(BuildContext context) async {
@@ -73,7 +88,7 @@ class ImagePickerAndCropperScreenState
         await ImagePicker().pickImage(source: ImageSource.camera);
 
     if (cameraImage != null) {
-      _cropImage(context, cameraImage.path);
+      _cropImage(cameraImage.path);
     }
   }
 
@@ -89,24 +104,23 @@ class ImagePickerAndCropperScreenState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            if (_assetEntity != null)
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: 0.8 * screenWidth,
-                  maxHeight: 0.7 * screenHeight,
-                ),
-                child: Image(
-                  image: AssetEntityImageProvider(
-                    thumbnailSize: const ThumbnailSize(200, 200),
-                    _assetEntity!,
-                    isOriginal: true,
-                  ),
-                
-                ),
-              ),
-            const SizedBox(height: 20),
+            // if (_assetEntity != null)
+            //   ConstrainedBox(
+            //     constraints: BoxConstraints(
+            //       maxWidth: 0.8 * screenWidth,
+            //       maxHeight: 0.7 * screenHeight,
+            //     ),
+            //     child: Image(
+            //       image: AssetEntityImageProvider(
+            //         thumbnailSize: const ThumbnailSize(200, 200),
+            //         _assetEntity!,
+            //         isOriginal: true,
+            //       ),
+            //     ),
+            //   ),
+            // const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => _selectImageFromGallery(context),
+              onPressed: () => _selectImageFromGallery(),
               child: const Text('Pick Image'),
             ),
             ElevatedButton(

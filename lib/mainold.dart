@@ -261,91 +261,91 @@
 //     );
 //   }
 
-//   Widget _uploaderCard() {
-//     return Center(
-//       child: Card(
-//         elevation: 4.0,
-//         shape: RoundedRectangleBorder(
-//           borderRadius: BorderRadius.circular(16.0),
-//         ),
-//         child: SizedBox(
-//           width: kIsWeb ? 380.0 : 320.0,
-//           height: 300.0,
-//           child: Column(
-//             mainAxisSize: MainAxisSize.max,
-//             crossAxisAlignment: CrossAxisAlignment.center,
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Expanded(
-//                 child: Padding(
-//                   padding: const EdgeInsets.all(16.0),
-//                   child: DottedBorder(
-//                     radius: const Radius.circular(12.0),
-//                     borderType: BorderType.RRect,
-//                     dashPattern: const [8, 4],
-//                     color: Theme.of(context).highlightColor.withOpacity(0.4),
-//                     child: Center(
-//                       child: Column(
-//                         mainAxisSize: MainAxisSize.min,
-//                         crossAxisAlignment: CrossAxisAlignment.center,
-//                         children: [
-//                           Icon(
-//                             Icons.image,
-//                             color: Theme.of(context).highlightColor,
-//                             size: 80.0,
-//                           ),
-//                           const SizedBox(height: 24.0),
-//                           Text(
-//                             'Upload an image to start',
-//                             style: kIsWeb
-//                                 ? Theme.of(context)
-//                                     .textTheme
-//                                     .headlineSmall!
-//                                     .copyWith(
-//                                         color: Theme.of(context).highlightColor)
-//                                 : Theme.of(context)
-//                                     .textTheme
-//                                     .bodyMedium!
-//                                     .copyWith(
-//                                         color:
-//                                             Theme.of(context).highlightColor),
-//                           )
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                 children: [
-//                   Padding(
-//                     padding: const EdgeInsets.symmetric(vertical: 24.0),
-//                     child: ElevatedButton(
-//                       onPressed: () {
-//                         pickAssets(
-//                             maxCount: 1, requestType: RequestType.common);
-//                       },
-//                       child: const Text('Upload'),
-//                     ),
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.symmetric(vertical: 24.0),
-//                     child: ElevatedButton(
-//                       onPressed: () {
-//                         _uploadImage();
-//                       },
-//                       child: const Text('Take a photo'),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
+  // Widget _uploaderCard() {
+  //   return Center(
+  //     child: Card(
+  //       elevation: 4.0,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(16.0),
+  //       ),
+  //       child: SizedBox(
+  //         width: kIsWeb ? 380.0 : 320.0,
+  //         height: 300.0,
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.max,
+  //           crossAxisAlignment: CrossAxisAlignment.center,
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: [
+  //             Expanded(
+  //               child: Padding(
+  //                 padding: const EdgeInsets.all(16.0),
+  //                 child: DottedBorder(
+  //                   radius: const Radius.circular(12.0),
+  //                   borderType: BorderType.RRect,
+  //                   dashPattern: const [8, 4],
+  //                   color: Theme.of(context).highlightColor.withOpacity(0.4),
+  //                   child: Center(
+  //                     child: Column(
+  //                       mainAxisSize: MainAxisSize.min,
+  //                       crossAxisAlignment: CrossAxisAlignment.center,
+  //                       children: [
+  //                         Icon(
+  //                           Icons.image,
+  //                           color: Theme.of(context).highlightColor,
+  //                           size: 80.0,
+  //                         ),
+  //                         const SizedBox(height: 24.0),
+  //                         Text(
+  //                           'Upload an image to start',
+  //                           style: kIsWeb
+  //                               ? Theme.of(context)
+  //                                   .textTheme
+  //                                   .headlineSmall!
+  //                                   .copyWith(
+  //                                       color: Theme.of(context).highlightColor)
+  //                               : Theme.of(context)
+  //                                   .textTheme
+  //                                   .bodyMedium!
+  //                                   .copyWith(
+  //                                       color:
+  //                                           Theme.of(context).highlightColor),
+  //                         )
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //               children: [
+  //                 Padding(
+  //                   padding: const EdgeInsets.symmetric(vertical: 24.0),
+  //                   child: ElevatedButton(
+  //                     onPressed: () {
+  //                       pickAssets(
+  //                           maxCount: 1, requestType: RequestType.common);
+  //                     },
+  //                     child: const Text('Upload'),
+  //                   ),
+  //                 ),
+  //                 Padding(
+  //                   padding: const EdgeInsets.symmetric(vertical: 24.0),
+  //                   child: ElevatedButton(
+  //                     onPressed: () {
+  //                       _uploadImage();
+  //                     },
+  //                     child: const Text('Take a photo'),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
 // Future<void> _cropImage() async {
 //   if (_pickedFile != null) {
@@ -353,17 +353,17 @@
 //       sourcePath: _pickedFile!.path,
 //       compressFormat: ImageCompressFormat.jpg,
 //       compressQuality: 100,
-//       uiSettings: [
-//         AndroidUiSettings(
-//             toolbarTitle: 'Cropper',
-//             toolbarColor: Colors.deepOrange,
-//             toolbarWidgetColor: Colors.white,
-//             initAspectRatio: CropAspectRatioPreset.original,
-//             lockAspectRatio: false),
-//         IOSUiSettings(
-//           title: 'Cropper',
-//         ),
-//       ],
+      // uiSettings: [
+      //   AndroidUiSettings(
+      //       toolbarTitle: 'Cropper',
+      //       toolbarColor: Colors.deepOrange,
+      //       toolbarWidgetColor: Colors.white,
+      //       initAspectRatio: CropAspectRatioPreset.original,
+      //       lockAspectRatio: false),
+      //   IOSUiSettings(
+      //     title: 'Cropper',
+      //   ),
+      // ],
 //     );
 //     if (croppedFile != null) {
 //       setState(() {
@@ -494,31 +494,29 @@ class _ImagePickerAndCropperScreenState
       appBar: AppBar(
         title: const Text('Image Picker and Cropper'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            if (_assetEntity != null)
-              Image(
-                image: AssetEntityImageProvider(
-                  _assetEntity!,
-                  isOriginal: false,
-                ),
-                width: 300,
-                height: 300,
-                fit: BoxFit.cover,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          if (_assetEntity != null)
+            Image(
+              image: AssetEntityImageProvider(
+                _assetEntity!,
+                isOriginal: false,
               ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _selectImageFromGallery(context),
-              child: const Text('Pick Image'),
+              width: 300,
+              height: 300,
+              fit: BoxFit.cover,
             ),
-            ElevatedButton(
-              onPressed: () => _openCamera(context),
-              child: const Text('Open Camera'),
-            ),
-          ],
-        ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () => _selectImageFromGallery(context),
+            child: const Text('Pick Image'),
+          ),
+          ElevatedButton(
+            onPressed: () => _openCamera(context),
+            child: const Text('Open Camera'),
+          ),
+        ],
       ),
     );
   }
