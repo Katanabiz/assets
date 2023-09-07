@@ -19,7 +19,7 @@ class ImagePickerAndCropperScreenState
     extends State<ImagePickerAndCropperScreen> {
   AssetEntity? _assetEntity;
 
-  Future<void> _cropImage( String filePath) async {
+  Future<void> _cropImage(String filePath) async {
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: filePath,
       compressFormat: ImageCompressFormat.jpg,
@@ -37,14 +37,24 @@ class ImagePickerAndCropperScreenState
       ],
     );
 
-    if (croppedFile != null) {
-      final croppedEntity = await PhotoManager.editor.saveImage(
+    try {
+      if (croppedFile != null) {
+        final croppedEntity = await PhotoManager.editor.saveImage(
           File(croppedFile.path).readAsBytesSync(),
-          title: 'Cropped Image');
-      setState(() {
-        _assetEntity = croppedEntity;
-      });
-      navigateToDisplayImageScreen(croppedEntity!);
+          title: 'write_your_own_title.jpg',
+        );
+
+        if (croppedEntity != null) {
+          setState(() {
+            _assetEntity = croppedEntity;
+          });
+          navigateToDisplayImageScreen(croppedEntity);
+        } else {
+          print("croppedEntity is null");
+        }
+      }
+    } catch (e) {
+      print('An error occurred: $e');
     }
   }
 
@@ -69,7 +79,7 @@ class ImagePickerAndCropperScreenState
 
       if (selectedImage != null) {
         final file = await selectedImage.file;
-        _cropImage( file!.path);
+        _cropImage(file!.path);
       }
     }
   }
@@ -104,21 +114,21 @@ class ImagePickerAndCropperScreenState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // if (_assetEntity != null)
-            //   ConstrainedBox(
-            //     constraints: BoxConstraints(
-            //       maxWidth: 0.8 * screenWidth,
-            //       maxHeight: 0.7 * screenHeight,
-            //     ),
-            //     child: Image(
-            //       image: AssetEntityImageProvider(
-            //         thumbnailSize: const ThumbnailSize(200, 200),
-            //         _assetEntity!,
-            //         isOriginal: true,
-            //       ),
-            //     ),
-            //   ),
-            // const SizedBox(height: 20),
+            if (_assetEntity != null)
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 0.8 * screenWidth,
+                  maxHeight: 0.7 * screenHeight,
+                ),
+                child: Image(
+                  image: AssetEntityImageProvider(
+                    thumbnailSize: const ThumbnailSize(200, 200),
+                    _assetEntity!,
+                    isOriginal: true,
+                  ),
+                ),
+              ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => _selectImageFromGallery(),
               child: const Text('Pick Image'),
