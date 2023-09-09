@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_scale_tap/flutter_scale_tap.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_view/image_view.dart';
@@ -50,7 +52,7 @@ class ImagePickerAndCropperScreenState
           });
           navigateToDisplayImageScreen(croppedEntity);
         } else {
-          print("croppedEntity is null");
+          print("cropped entity is null");
         }
       }
     } catch (e) {
@@ -104,42 +106,112 @@ class ImagePickerAndCropperScreenState
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Image Picker and Cropper'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            if (_assetEntity != null)
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: 0.8 * screenWidth,
-                  maxHeight: 0.7 * screenHeight,
-                ),
-                child: Image(
-                  image: AssetEntityImageProvider(
-                    thumbnailSize: const ThumbnailSize(200, 200),
-                    _assetEntity!,
-                    isOriginal: true,
-                  ),
+        appBar: AppBar(
+          title: const Text('Image Picker and Cropper'),
+        ),
+        body: _uploaderCard());
+  }
+
+  Widget _uploaderCard() {
+    return ScaleTap(
+      onPressed: () {
+        _showBottomSheet(context);
+      },
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: DottedBorder(
+              radius: const Radius.circular(12.0),
+              borderType: BorderType.RRect,
+              dashPattern: const [8, 4],
+              color: Colors.black,
+              child: const Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.image,
+                      color: Colors.blue,
+                      size: 80.0,
+                    ),
+                    Text('Upload an image to start',
+                        style: TextStyle(
+                          color: Colors.black,
+                        )),
+                    SizedBox(height: 10.0),
+                  ],
                 ),
               ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _selectImageFromGallery(),
-              child: const Text('Pick Image'),
             ),
-            ElevatedButton(
-              onPressed: () => _openCamera(context),
-              child: const Text('Open Camera'),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
+    );
+  }
+
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.black.withOpacity(0.2),
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Container(
+            height: 150.0,
+            decoration: const BoxDecoration(
+              color: Colors.white, // Background color
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            _selectImageFromGallery();
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.photo_library,
+                            color: Colors.blue,
+                            size: 40.0,
+                          ),
+                        ),
+                        const Text('Gallery'),
+                      ],
+                    )),
+                Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            _openCamera(context);
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.photo_camera,
+                            color: Colors.blue,
+                            size: 40.0,
+                          ),
+                        ),
+                        const Text('Camera'),
+                      ],
+                    )),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
