@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_scale_tap/flutter_scale_tap.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_view/image_view.dart';
-import 'package:image_view/mainold.dart';
+import 'package:image_view/image_grid_screen.dart';
+
 import 'package:photo_manager/photo_manager.dart';
 
 class ImagePickerAndCropperScreen extends StatefulWidget {
@@ -50,7 +50,7 @@ class ImagePickerAndCropperScreenState
           setState(() {
             _assetEntity = croppedEntity;
           });
-          navigateToDisplayImageScreen(croppedEntity);
+          imageGridMethod([_assetEntity!]);
         } else {
           print("cropped entity is null");
         }
@@ -60,14 +60,14 @@ class ImagePickerAndCropperScreenState
     }
   }
 
-  void navigateToDisplayImageScreen(AssetEntity assetEntity) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DisplayImageScreen(assetEntity: assetEntity),
-      ),
-    );
-  }
+  // void navigateToDisplayImageScreen(AssetEntity images) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => ImageGridScreen(images: images)
+  //     ),
+  //   );
+  // }
 
   void _selectImageFromGallery() async {
     final List<AssetPathEntity> albums =
